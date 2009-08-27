@@ -50,6 +50,7 @@ module Shippinglogic
           :service_type,
           :status,
           :delivery_at,
+          :estimated_delivery_at,
           :events
         
         def origin_residential?
@@ -80,6 +81,7 @@ module Shippinglogic
           self.signature_name = details[:delivery_signature_name]
           self.service_type = details[:service_type]
           self.status = details[:status_description]
+          self.estimated_delivery_at = Time.parse(details[:estimated_delivery_timestamp]) unless details[:estimated_delivery_timestamp].nil?
           self.delivery_at = Time.parse(details[:actual_delivery_timestamp]) unless details[:actual_delivery_timestamp].nil?
           
           self.events = (response[:track_details][:events] || []).collect do |details|
