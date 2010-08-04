@@ -101,7 +101,7 @@ module Shippinglogic
         end
       end
       
-      VERSION = {:major => 3, :intermediate => 0, :minor => 0}
+      VERSION = {:major => 4, :intermediate => 0, :minor => 0}
       
       attribute :tracking_number, :string
       
