@@ -30,13 +30,13 @@ module Shippinglogic
     # multi package shipment is to increase the package_count option and keep the dimensions and weight the same for all packages. Then again,
     # the documentation for the UPS web services is terrible, so I could be wrong. Any tests I tried resulted in an error though.
     #
-    # * <tt>packaging_type</tt> - one of PACKAGE_TYPES. (default: YOUR_PACKAGING)
+    # * <tt>packaging_type</tt> - one of PACKAGE_TYPES. (the default is "00", see Enumerations::PACKAGING_TYPES)
     # * <tt>package_count</tt> - the number of packages in your shipment. (default: 1)
     # * <tt>package_weight</tt> - a single packages weight.
     # * <tt>package_weight_units</tt> - either LB or KG. (default: LB)
-    # * <tt>package_length</tt> - a single packages length, only required if using YOUR_PACKAGING for packaging_type.
-    # * <tt>package_width</tt> - a single packages width, only required if using YOUR_PACKAGING for packaging_type.
-    # * <tt>package_height</tt> - a single packages height, only required if using YOUR_PACKAGING for packaging_type.
+    # * <tt>package_length</tt> - a single packages length, only required if using "00" for packaging_type.
+    # * <tt>package_width</tt> - a single packages width, only required if using "00" for packaging_type.
+    # * <tt>package_height</tt> - a single packages height, only required if using "00" for packaging_type.
     # * <tt>package_dimension_units</tt> - either IN or CM. (default: IN)
     #
     # === Monetary options
