@@ -22,14 +22,14 @@ module Shippinglogic
       attribute :use_account_address,         :boolean,     :default => true
       attribute :package_location,            :string
       attribute :package_weight_units,        :string,      :default => "LB"
-      attribute :package_count,               :integer
+      attribute :package_count,               :integer,     :default => 1
       attribute :total_weight,                :integer
       attribute :building_part_code,          :string
       attribute :building_description,        :string
       attribute :ready_time,                  :datetime
       attribute :company_close_time,          :datetime
       attribute :carrier_code,                :string,      :default => "FDXE"
-      attribute :oversize_package_count,      :integer,     :default => 1
+      attribute :oversize_package_count,      :integer,     :default => 0
       attribute :courier_remarks,             :string,      :default =>''      
       attribute :commodity_description,       :string,      :default => ''
       
