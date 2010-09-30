@@ -103,7 +103,7 @@ module Shippinglogic
     #   # => "XXXXXXXXXXXXXX"
     class Ship < Service
       # The shipment result is an object of this class
-      class Shipment; attr_accessor :rate, :currency, :delivery_date, :tracking_number, :label, :barcode; end
+      class Shipment; attr_accessor :rate, :currency, :delivery_date, :tracking_number, :label, :barcode, :astra_barcode; end
       
       VERSION = {:major => 6, :intermediate => 0, :minor => 0}
       
