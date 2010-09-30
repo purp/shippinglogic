@@ -140,7 +140,6 @@ module Shippinglogic
       
       # packaging options
       attribute :packaging_type,              :string,      :default => "YOUR_PACKAGING"
-      attribute :packaging_type,              :string,      :default => "YOUR_PACKAGING"
       attribute :package_count,               :integer,     :default => 1
       attribute :package_weight,              :float
       attribute :package_weight_units,        :string,      :default => "LB"
@@ -166,6 +165,13 @@ module Shippinglogic
       # misc options
       attribute :just_validate,               :boolean,     :default => false
       attribute :rate_request_types,          :array,       :default => ["ACCOUNT"]
+      attribute :ready_time,                  :datetime
+      attribute :lastest_pickup_time,         :datetime
+      
+      #special services
+      attribute :return_type,                 :string
+      attribute :rma_number,                  :string
+      attribute :rma_reason,                  :string
       
       private
         def target
@@ -178,7 +184,6 @@ module Shippinglogic
           xml = b.tag!(just_validate ? "ValidateShipmentRequest" : "ProcessShipmentRequest", :xmlns => "http://fedex.com/ws/ship/v#{VERSION[:major]}") do
             build_authentication(b)
             build_version(b, "ship", VERSION[:major], VERSION[:intermediate], VERSION[:minor])
-            b.SpecialServicesRequested special_services_requested.join(",") if special_services_requested.any?
             
             b.RequestedShipment do
               b.ShipTimestamp ship_time.xmlschema if ship_time
@@ -202,6 +207,21 @@ module Shippinglogic
                 b.Payor do
                   b.AccountNumber payor_account_number if payor_account_number
                   b.CountryCode payor_country if payor_country
+                end
+              end
+              
+              if special_services_requested
+                b.SpecialServicesRequested do
+                  b.SpecialServiceTypes special_services_requested.join(",")
+                  if return_type
+                    b.ReturnShipmentDetail do
+                      b.ReturnType return_type
+                      b.Rma do
+                        b.Number rma_number
+                        b.Reason rma_reason
+                      end
+                    end
+                  end
                 end
               end
               

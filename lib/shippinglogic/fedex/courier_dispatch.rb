@@ -57,8 +57,8 @@ module Shippinglogic
              b.PackageLocation package_location
              b.BuildingPartCode building_part_code
              b.BuildingPartDescription building_description
-             b.ReadyTimestamp ready_time
-             b.CompanyCloseTime company_close_time
+             b.ReadyTimestamp ready_time.xmlschema
+             b.CompanyCloseTime company_close_time.xmlschema
           end
           b.PackageCount package_count
           b.TotalWeight do
