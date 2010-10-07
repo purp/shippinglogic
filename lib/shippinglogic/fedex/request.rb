@@ -15,7 +15,7 @@ module Shippinglogic
         #
         # Ex: if I want to change the indent level to 3 it should change for all requests built.
         def builder
-          b = Builder::XmlMarkup.new(:indent => 2)
+          b = Builder::XmlMarkup.new
           b.instruct!
           b
         end

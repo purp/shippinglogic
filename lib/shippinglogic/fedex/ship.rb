@@ -105,7 +105,7 @@ module Shippinglogic
     #   # => "XXXXXXXXXXXXXX"
     class Ship < Service
       # The shipment result is an object of this class
-      class Shipment; attr_accessor :rate, :currency, :delivery_date, :tracking_number, :label, :barcode; end
+      class Shipment; attr_accessor :rate, :currency, :delivery_date, :tracking_number, :label, :barcode, :astra_barcode; end
       
       VERSION = {:major => 6, :intermediate => 0, :minor => 0}
       
@@ -142,7 +142,6 @@ module Shippinglogic
       
       # packaging options
       attribute :packaging_type,              :string,      :default => "YOUR_PACKAGING"
-      attribute :packaging_type,              :string,      :default => "YOUR_PACKAGING"
       attribute :package_count,               :integer,     :default => 1
       attribute :package_weight,              :float
       attribute :package_weight_units,        :string,      :default => "LB"
@@ -168,6 +167,13 @@ module Shippinglogic
       # misc options
       attribute :just_validate,               :boolean,     :default => false
       attribute :rate_request_types,          :array,       :default => ["ACCOUNT"]
+      attribute :ready_time,                  :datetime
+      attribute :lastest_pickup_time,         :datetime
+      
+      #special services
+      attribute :return_type,                 :string
+      attribute :rma_number,                  :string
+      attribute :rma_reason,                  :string
       
       private
         def target
@@ -206,6 +212,21 @@ module Shippinglogic
                 end
               end
               
+              if special_services_requested
+                b.SpecialServicesRequested do
+                  b.SpecialServiceTypes special_services_requested.join(",")
+                  if return_type
+                    b.ReturnShipmentDetail do
+                      b.ReturnType return_type
+                      b.Rma do
+                        b.Number rma_number
+                        b.Reason rma_reason
+                      end
+                    end
+                  end
+                end
+              end
+              
               b.LabelSpecification do
                 b.LabelFormatType label_format if label_format
                 b.ImageType label_file_type if label_file_type
@@ -221,16 +242,18 @@ module Shippinglogic
         # Making sense of the reponse and grabbing the information we need.
         def parse_response(response)
           details = response[:completed_shipment_detail]
-          rate = details[:shipment_rating][:shipment_rate_details].first[:total_net_charge]
           package_details = details[:completed_package_details]
-          
           shipment = Shipment.new
-          shipment.rate = BigDecimal.new(rate[:amount])
-          shipment.currency = rate[:currency]
+          if details[:shipment_rating]
+            rate = details[:shipment_rating][:shipment_rate_details].first[:total_net_charge]
+            shipment.rate = BigDecimal.new(rate[:amount])
+            shipment.currency = rate[:currency]
+          end
           shipment.delivery_date = Date.parse(details[:routing_detail][:delivery_date])
           shipment.tracking_number = package_details[:tracking_id][:tracking_number]
           shipment.label = package_details[:label][:parts][:image] && Base64.decode64(package_details[:label][:parts][:image])
           shipment.barcode = package_details[:barcodes][:common2_d_barcode] && Base64.decode64(package_details[:barcodes][:common2_d_barcode])
+          shipment.astra_barcode = package_details[:barcodes][:astra_barcode]
           shipment
         end
     end

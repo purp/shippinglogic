@@ -50,6 +50,7 @@ module Shippinglogic
           :service_type,
           :status,
           :delivery_at,
+          :estimated_delivery_at,
           :events
         
         def origin_residential?
@@ -63,37 +64,44 @@ module Shippinglogic
         def initialize(response)
           details = response[:track_details]
           
-          self.origin_city = details[:origin_location_address][:city]
-          self.origin_state = details[:origin_location_address][:state_or_province_code]
-          self.origin_country = details[:origin_location_address][:country_code]
-          self.origin_residential = details[:origin_location_address][:residential] == "true"
+          unless details[:origin_location_address].nil?          
+            self.origin_city = details[:origin_location_address][:city]
+            self.origin_state = details[:origin_location_address][:state_or_province_code]
+            self.origin_country = details[:origin_location_address][:country_code]
+            self.origin_residential = details[:origin_location_address][:residential] == "true"
+          end
           
-          self.destination_city = details[:destination_address][:city]
-          self.destination_state = details[:destination_address][:state_or_province_code]
-          self.destination_country = details[:destination_address][:country_code]
-          self.destination_residential = details[:destination_address][:residential] == "true"
+          unless details[:destination_address].nil?                    
+            self.destination_city = details[:destination_address][:city]
+            self.destination_state = details[:destination_address][:state_or_province_code]
+            self.destination_country = details[:destination_address][:country_code]
+            self.destination_residential = details[:destination_address][:residential] == "true"
+          end
           
           self.signature_name = details[:delivery_signature_name]
           self.service_type = details[:service_type]
           self.status = details[:status_description]
-          self.delivery_at = Time.parse(details[:actual_delivery_timestamp])
+          self.estimated_delivery_at = Time.parse(details[:estimated_delivery_timestamp]) unless details[:estimated_delivery_timestamp].nil?
+          self.delivery_at = Time.parse(details[:actual_delivery_timestamp]) unless details[:actual_delivery_timestamp].nil?
           
-          self.events = response[:track_details][:events].collect do |details|
+          self.events = (response[:track_details][:events] || []).collect do |details|
             event = Event.new
             event.name = details[:event_description]
             event.type = details[:event_type]
-            event.occured_at = Time.parse(details[:timestamp])
-            event.city = details[:address][:city]
-            event.state = details[:address][:state_or_province_code]
-            event.postal_code = details[:address][:postal_code]
-            event.country = details[:address][:country_code]
-            event.residential = details[:address][:residential] == "true"
+            event.occured_at = Time.parse(details[:timestamp]) unless details[:timestamp].nil?
+            unless details[:address].nil?
+              event.city = details[:address][:city]
+              event.state = details[:address][:state_or_province_code]
+              event.postal_code = details[:address][:postal_code]
+              event.country = details[:address][:country_code]
+              event.residential = details[:address][:residential] == "true"
+            end
             event
           end
         end
       end
       
-      VERSION = {:major => 3, :intermediate => 0, :minor => 0}
+      VERSION = {:major => 4, :intermediate => 0, :minor => 0}
       
       attribute :tracking_number, :string
       
