@@ -39,11 +39,11 @@ module Shippinglogic
         class Event 
           attr_accessor :name, :type, :occurred_at, :city, :state, :postal_code, :country, :residential; 
           def occured_at
-            logger.warn("DEPRECATION WARNING: Event#occured_at is deprecated.  Please call Event#occurred_at.")
+            #logger.warn("DEPRECATION WARNING: Event#occured_at is deprecated.  Please call Event#occurred_at.")
             self.occurred_at
           end
           def occured_at=(value)
-            logger.warn("DEPRECATION WARNING: Event#occured_at is deprecated.  Please call Event#occurred_at.")
+            #logger.warn("DEPRECATION WARNING: Event#occured_at is deprecated.  Please call Event#occurred_at.")
             self.occurred_at = value
           end
         end

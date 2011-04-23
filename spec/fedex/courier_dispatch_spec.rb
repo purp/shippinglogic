@@ -26,7 +26,7 @@ describe "FedEx Courier Dispatch" do
   
   
   it "should request a courier" do
-    use_response(:courier_dispatch_defaults)
+    use_fedex_response(:courier_dispatch_defaults)
     @courier_dispatch.location.should == 'LWMA'
     @courier_dispatch.confirmation == 11
   end
