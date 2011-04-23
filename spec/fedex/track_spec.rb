@@ -1,8 +1,12 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "FedEx Track" do
+  before(:each) do
+    setup_fedex_responses
+  end
+  
   it "should track the package" do
-    use_response(:track_defaults)
+    use_fedex_response(:track_defaults)
     
     fedex = new_fedex
     track_details = fedex.track(:tracking_number => fedex_tracking_number)
@@ -27,7 +31,7 @@ describe "FedEx Track" do
     event = track_details.events.first
     event.name.should == "Delivered"
     event.type.should == "DL"
-    event.occured_at.should == Time.parse("Mon Dec 08 10:43:37 -0500 2008")
+    event.occurred_at.should == Time.parse("Mon Dec 08 10:43:37 -0500 2008")
     event.city.should == "Sacramento"
     event.state.should == "CA"
     event.postal_code.should == "95817"

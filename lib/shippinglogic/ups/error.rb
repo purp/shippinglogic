@@ -27,15 +27,13 @@ module Shippinglogic
         elsif errors = response.fetch(:response, {})[:error]
           errors = errors.is_a?(Array) ? errors : [errors]
           errors.delete_if { |error| Response::SUCCESSFUL_SEVERITIES.include?(error[:error_severity]) }
-          errors.each { |error| add_error(error[:error_description], error[:error_code]) }
+          errors.each { |error| add_error(error[:error_description], :code => error[:error_code]) }
         else
           add_error(
             "There was a problem with your UPS request, and we couldn't locate a specific error message. This means your response " +
             "was in an unexpected format. You might try glancing at the raw response by using the 'response' method on this error object."
           )
-        end
-        
-        super(errors.collect { |error| error[:message] }.join(", "))
+        end        
       end
     end
   end
