@@ -5,6 +5,7 @@ require "shippinglogic/fedex/rate"
 require "shippinglogic/fedex/ship"
 require "shippinglogic/fedex/signature"
 require "shippinglogic/fedex/track"
+require "shippinglogic/fedex/address"
 require "shippinglogic/fedex/courier_dispatch"
 require "shippinglogic/fedex/courier_cancel"
 
@@ -82,6 +83,10 @@ module Shippinglogic
     def track(attributes = {})
       @track ||= Track.new(self, attributes)
     end
+
+		def address(attributes = {})
+		  @address ||= Address.new(self, attributes)
+		end
     
     def courier_dispatch(attributes = {})
       @courier_dispatch ||= CourierDispatch.new(self, attributes)
