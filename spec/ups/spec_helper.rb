@@ -20,10 +20,10 @@ Spec::Runner.configure do |config|
     def ups_credentials
       return @ups_credentials if defined?(@ups_credentials)
   
-      ups_credentials_path = "#{SPEC_ROOT}/config/ups_credentials.yml"
+      ups_credentials_path = "#{SPEC_ROOT}/../config/ups_credentials.yml"
   
       unless File.exists?(ups_credentials_path)
-        raise "You need to add your own UPS test credentials in spec/config/ups_credentials.yml. See spec/config/ups_credentials.example.yml for an example."
+        raise "You need to add your own UPS test credentials in config/ups_credentials.yml. See config/ups_credentials.example.yml for an example."
       end
   
       @ups_credentials = YAML.load(File.read(ups_credentials_path))

@@ -1,7 +1,8 @@
 *.sw?
 .DS_Store
 .idea
+.rvmrc
 coverage
 rdoc
 pkg
-spec/config/*credentials.yml
+config/*credentials.yml

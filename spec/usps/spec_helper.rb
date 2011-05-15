@@ -19,10 +19,10 @@ Spec::Runner.configure do |config|
     def usps_credentials
       return @usps_credentials if defined?(@usps_credentials)
 
-      usps_credentials_path = "#{SPEC_ROOT}/config/usps_credentials.yml"
+      usps_credentials_path = "#{SPEC_ROOT}/../config/usps_credentials.yml"
 
       unless File.exists?(usps_credentials_path)
-        raise "You need to add your own USPS test credentials in spec/config/usps_credentials.yml. See spec/config/usps_credentials.example.yml for an example."
+        raise "You need to add your own USPS test credentials in config/usps_credentials.yml. See config/usps_credentials.example.yml for an example."
       end
 
       @usps_credentials = YAML.load(File.read(usps_credentials_path))
