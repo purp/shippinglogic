@@ -12,6 +12,7 @@ begin
     gem.authors = ["Ben Johnson of Binary Logic"]
     gem.add_development_dependency "rspec", ">= 2.1.0"
     gem.add_development_dependency "fakeweb"
+    gem.add_development_dependency "simplecov"
     gem.add_dependency "httparty", ">= 0.4.4"
     gem.add_dependency "builder", ">= 2.1.2"
   end
@@ -21,13 +22,6 @@ rescue LoadError
 end
 
 require 'rspec/core/rake_task'
-
 RSpec::Core::RakeTask.new(:spec)
-
-RSpec::Core::RakeTask.new(:spec) do |spec|
-  spec.rcov = true
-end
-
 task :spec => :check_dependencies
-
 task :default => :spec
