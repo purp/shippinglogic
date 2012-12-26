@@ -1,11 +1,11 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-Spec::Runner.configure do |config|
+RSpec.configure do |config|
   config.before(:each) do
     def setup_fedex_responses
       HTTParty::Request.response_directory = File.dirname(__FILE__) + "/responses"
       FakeWeb.clean_registry
-          
+
       if File.exists?("#{SPEC_ROOT}/fedex/responses/_new.xml")
         raise "You have a new response in your response folder, you need to rename this before we can continue testing."
       end
@@ -27,13 +27,13 @@ Spec::Runner.configure do |config|
 
     def fedex_credentials
       return @fedex_credentials if defined?(@fedex_credentials)
-  
+
       fedex_credentials_path = "#{SPEC_ROOT}/../config/fedex_credentials.yml"
-  
+
       unless File.exists?(fedex_credentials_path)
         raise "You need to add your own FedEx test credentials in config/fedex_credentials.yml. See config/fedex_credentials.example.yml for an example."
       end
-  
+
       @fedex_credentials = YAML.load(File.read(fedex_credentials_path))
     end
 

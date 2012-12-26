@@ -10,7 +10,7 @@ begin
     gem.email = "bjohnson@binarylogic.com"
     gem.homepage = "http://github.com/binarylogic/shippinglogic"
     gem.authors = ["Ben Johnson of Binary Logic"]
-    gem.add_development_dependency "rspec", "< 2.0"
+    gem.add_development_dependency "rspec", ">= 2.1.0"
     gem.add_development_dependency "fakeweb"
     gem.add_dependency "httparty", ">= 0.4.4"
     gem.add_dependency "builder", ">= 2.1.2"
@@ -20,15 +20,11 @@ rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
 end
 
-require 'spec/rake/spectask'
-Spec::Rake::SpecTask.new(:spec) do |spec|
-  spec.libs << 'lib' << 'spec'
-  spec.spec_files = FileList['spec/**/*_spec.rb']
-end
+require 'rspec/core/rake_task'
 
-Spec::Rake::SpecTask.new(:rcov) do |spec|
-  spec.libs << 'lib' << 'spec'
-  spec.pattern = 'spec/**/*_spec.rb'
+RSpec::Core::RakeTask.new(:spec)
+
+RSpec::Core::RakeTask.new(:spec) do |spec|
   spec.rcov = true
 end
 

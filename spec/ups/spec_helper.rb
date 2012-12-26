@@ -1,17 +1,17 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 Shippinglogic::UPS.options[:test] = true
-Spec::Runner.configure do |config|
+RSpec.configure do |config|
   config.before(:each) do
     def setup_ups_responses
       HTTParty::Request.response_directory = File.dirname(__FILE__) + "/responses"
       FakeWeb.clean_registry
-  
+
       if File.exists?("#{SPEC_ROOT}/ups/responses/_new.xml")
         raise "You have a new response in your response folder, you need to rename this before we can continue testing."
       end
     end
-  
+
 
     def new_ups
       Shippinglogic::UPS.new(*ups_credentials.values_at("key", "password", "account"))
@@ -19,13 +19,13 @@ Spec::Runner.configure do |config|
 
     def ups_credentials
       return @ups_credentials if defined?(@ups_credentials)
-  
+
       ups_credentials_path = "#{SPEC_ROOT}/../config/ups_credentials.yml"
-  
+
       unless File.exists?(ups_credentials_path)
         raise "You need to add your own UPS test credentials in config/ups_credentials.yml. See config/ups_credentials.example.yml for an example."
       end
-  
+
       @ups_credentials = YAML.load(File.read(ups_credentials_path))
     end
 

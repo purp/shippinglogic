@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 Shippinglogic::USPS.options[:test] = true
-Spec::Runner.configure do |config|
+RSpec.configure do |config|
   config.before(:each) do
     def setup_usps_responses
       HTTParty::Request.response_directory = File.dirname(__FILE__) + "/responses"
